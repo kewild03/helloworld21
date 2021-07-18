@@ -12,9 +12,13 @@ pipeline {
         sh 'mvn clean'
         sh 'mvn install'
         sh 'mvn package'
-        sh 'mvn test'
-              
+        sh 'mvn test'     
       }
-    } 
+    }
+    stage ('deploy to tomcat') {
+      steps {
+        deploy adapters: [tomcat8(credentialsId: 'TomcatID', path: '', url: 'https://192.168.1.248:8080')], contextPath: null, war: '**/*.war'
+      }
+    }  
+  } 
   }
-}
